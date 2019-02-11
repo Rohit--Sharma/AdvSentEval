@@ -54,6 +54,7 @@ def create_dictionary(sentences, threshold=0):
 
     return id2word, word2id
 
+
 # Get word vectors from vocabulary (glove, word2vec, fasttext ..)
 def get_wordvec(path_to_vec, word2id):
     word_vec = {}
@@ -77,6 +78,7 @@ def prepare(params, samples):
     params.wvec_dim = 300
     return
 
+
 def batcher(params, batch):
     batch = [sent if sent != [] else ['.'] for sent in batch]
     embeddings = []
@@ -94,6 +96,7 @@ def batcher(params, batch):
 
     embeddings = np.vstack(embeddings)
     return embeddings
+
 
 def adversarialFunc(params, batch_sentences, batch_labels, embeddings):
     # sentvec = np.multiply(sentvec, params.wvec_dim)
@@ -156,12 +159,13 @@ def adversarialFunc(params, batch_sentences, batch_labels, embeddings):
     # print " lable size:", repeated_labels.size
     return modified_vecs, repeated_labels, new_sentences
 
+
 # Set params for SentEval
 np.set_printoptions(suppress=True)
 np.set_printoptions(precision=4)
-params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 5, 'model_name': 'bow','batch_size': 128}
-params_senteval['classifier'] = {'nhid': 0, 'optim': 'rmsprop', 'batch_size': 128,
-                                 'tenacity': 3, 'epoch_size': 2, 'cudaEfficient' : True}
+params_senteval = {'task_path': PATH_TO_DATA, 'usepytorch': True, 'kfold': 5, 'model_name': 'bow', 'batch_size': 128,
+                   'classifier': {'nhid': 0, 'optim': 'rmsprop', 'batch_size': 128,
+                                  'tenacity': 3, 'epoch_size': 2, 'cudaEfficient': True}}
 
 # Set up logger
 logging.basicConfig(format='%(asctime)s : %(message)s', level=logging.DEBUG)
