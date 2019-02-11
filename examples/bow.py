@@ -174,8 +174,8 @@ if __name__ == "__main__":
     #                   'Length', 'WordContent', 'Depth', 'TopConstituents',
     #                   'BigramShift', 'Tense', 'SubjNumber', 'ObjNumber',
     #                   'OddManOut', 'CoordinationInversion']
-    # transfer_tasks = ['SST2']
-    transfer_tasks = ['STSBenchmark']
+    transfer_tasks = ['SST2']
+    # transfer_tasks = ['STSBenchmark']
     # transfer_tasks = ['MRPC']
     results = se.eval(transfer_tasks)
     # adv_results = results['SST2']['adv_results']
