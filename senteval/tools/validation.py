@@ -448,11 +448,16 @@ class SplitClassifier(object):
                 change_count = 0
 
                 # if i == 10:
-                #     print(self.get_sentence(adv_sentences[i][0]))
-                #     print("orig predcitions", adv_embed_y[i])
-                #     print("new predictions", sample_preds)
-                #     print("orig embeddings", self.X['test'][i])
-                #     print("new embeddings", adv_embed_x[i][0])
+                # print(self.X['test'][i])
+                try:
+                    print(self.get_sentence(adv_sentences[i][0]))
+                except UnicodeEncodeError:
+                    print('Cannot encode to Unicode')
+
+                print("orig predcitions", adv_embed_y[i])
+                print("new predictions", sample_preds)
+                # print("orig embeddings", self.X['test'][i])
+                # print("new embeddings", adv_embed_x[i][0])
 
                 if sample_preds[0] != sample_preds[1]:
                     change_due_to_randomness += 1

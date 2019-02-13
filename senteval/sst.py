@@ -23,8 +23,8 @@ try:
 except ImportError:
     import cPickle as pickle
 
-class SSTEval(object):
 
+class SSTEval(object):
 
     def __init__(self, task_path, nclasses=2, seed=1111):
         self.seed = seed
@@ -101,7 +101,6 @@ class SSTEval(object):
             print("%d sentences done"%(stidx))
         print("adv_embed length:%d %d"%(len(adv_embed_x), len(adv_embed_y)))
         return adv_embed_x, adv_embed_y, adv_sentences
-
 
     def run(self, params, batcher):
         if(params.train is not None and params.train == False):

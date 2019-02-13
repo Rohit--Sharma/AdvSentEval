@@ -24,6 +24,7 @@ from senteval.rank import ImageCaptionRetrievalEval
 from senteval.probing import *
 from datetime import datetime
 
+
 class SE(object):
     def __init__(self, params, batcher, prepare=None, adversarialFunc=None):
         # parameters

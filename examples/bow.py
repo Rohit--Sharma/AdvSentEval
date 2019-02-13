@@ -11,7 +11,8 @@ import sys
 import io
 import numpy as np
 import logging
-
+import nltk
+from nltk.corpus import wordnet
 
 # Set PATHs
 PATH_TO_SENTEVAL = '../'
@@ -24,7 +25,7 @@ sys.path.insert(0, PATH_TO_SENTEVAL)
 import senteval
 import pandas as pd
 
-sys.path.insert(1,PATH_TO_SENTEVAL)
+sys.path.insert(1, PATH_TO_SENTEVAL)
 from AdversarialModels import WordNetSynonym
 
 
@@ -123,8 +124,28 @@ def adversarialFunc(params, batch_sentences, batch_labels, embeddings):
         sent_adv_embeddings.append(sentvec)
         # print sent
         # print sentvec ,"\n"
-        for word, word_pos in zip(sent, range(len(sent))):
-            # print "new word ", word, "-" *80
+
+        sent_pos_tags = nltk.pos_tag(sent)
+
+        for word, word_idx, word_pos in zip(sent, range(len(sent)), sent_pos_tags):
+            wordnet_pos = None
+            if word_pos[1] in ['NN', 'NNS', 'NNP', 'NNPS']:
+                wordnet_pos = wordnet.NOUN
+            elif word_pos[1] in ['VB', 'VBD', 'VBG', 'VBN', 'VBP', 'VBZ']:
+                wordnet_pos = wordnet.VERB
+            elif word_pos[1] in ['RB', 'RBR', 'RBS']:
+                wordnet_pos = wordnet.ADV
+            elif word_pos[1] in ['JJ, JJR, JJS']:
+                wordnet_pos = wordnet.ADJ
+            else:
+                wordnet_pos = wordnet.ADJ_SAT
+
+            try:
+                print "new word ", word, "-" * 80
+                print 'pos', wordnet_pos, ' ', word_pos[1]
+            except:
+                pass
+
             new_sentvec = np.array(sentvec)
             if word in params.word_vec:
                 # print word, "-" * 30
@@ -132,7 +153,7 @@ def adversarialFunc(params, batch_sentences, batch_labels, embeddings):
                 new_sentvec = np.subtract(sentvec, np.true_divide(params.word_vec[word], len(sent)))
                 # print "new sent vec ", "-" * 30
                 # print new_sentvec[:20]
-                word_syns = WordNetSynonym.get_word_synonym(word)
+                word_syns = WordNetSynonym.get_word_synonym(word, wordnet_pos)
                 # print word_syns
                 for syn in word_syns:
                     if syn in params.word_vec:
@@ -146,7 +167,7 @@ def adversarialFunc(params, batch_sentences, batch_labels, embeddings):
                         sent_adv_labels.append(y_label)
 
                         new_sent = list(sent)
-                        new_sent[word_pos] = syn
+                        new_sent[word_idx] = syn
                         sent_adversaries.append(new_sent)
 
                         # print "mod sent vec", "-" * 30

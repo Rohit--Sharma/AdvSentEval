@@ -19,15 +19,14 @@ antonyms = dict()
 # print(set(antonyms))
 
 
-
-def get_word_synonym(word):
+def get_word_synonym(word, pos=None):
     if word in synonyms.keys():
         # print "returning already present"
         return synonyms[word]
     else :
         word_syns = []
         word_ants = []
-        for syn in wordnet.synsets(word):
+        for syn in wordnet.synsets(word, pos):
             for l in syn.lemmas():
                 word_syns.append(l.name())
                 if l.antonyms():
